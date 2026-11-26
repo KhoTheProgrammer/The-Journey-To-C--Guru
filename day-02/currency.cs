@@ -1,44 +1,43 @@
-const double FXRATE = 4200;
+const decimal FxRate = 4200m;
 
-Main();
-
-void Main(){
-    // Print Options for Conversion
-    Console.WriteLine("Choose an option below");
-    Console.WriteLine("1. MWK to USD");
-    Console.WriteLine("2. USD to MWK");
-    int choice = (int)GetNumber();
-    if (choice == 1){
-        double mwk = GetNumber();
-        double usd = ConvertToDollar(mwk, FXRATE);
-        Console.WriteLine($"{mwk} in MWK is {usd:N2} in USD");
-    }else if(choice == 2){
-        double usd = GetNumber();
-        double mwk = ConvertToKwacha(usd, FXRATE);
-        Console.WriteLine($"{usd} in MWK is {mwk:N2} in USD");
-    }else{
-        Console.WriteLine("Please Enter a valid choice");
-    }
+Console.WriteLine("Please choose an option below:");
+Console.WriteLine("1. MWK to USD");
+Console.WriteLine("2. USD to MWK");
+int choice = GetChoice();
+if (choice == 1){
+    decimal mwk = GetAmount("Enter amount in MWK: ");
+    decimal usd = mwk / FxRate;
+    Console.WriteLine($"{mwk:N2} in MWK is {usd:N2} in USD at the rate of {FxRate}");
+}else if (choice == 2){
+    decimal usd = GetAmount("Enter amount in USD: ");
+    decimal mwk = usd * FxRate;
+    Console.WriteLine($"{usd:N2} in USD is {mwk:N2} in MWK at the rate of {FxRate}" );
+}else{
 
 }
 
-double GetNumber(){
-    Console.Write("Enter amount: ");
-    double amount;
-    bool isValid = double.TryParse(Console.ReadLine(), out amount);
-    if (isValid){
-        return amount;
-    }
-    else{
-        Console.WriteLine("Please Enter A Valid Number!!!");
-        return -1;
+
+// Returns a valid choice from user
+int GetChoice(){
+    while (true){
+        Console.Write("Enter your choice: ");
+        bool isValid = int.TryParse(Console.ReadLine(), out int choice);
+        // Chack if choice is valid
+        if (isValid){
+            return choice;
+        }
     }
 }
 
-double ConvertToDollar(double amount, double fxrate){
-    return amount / fxrate;
-}
 
-double ConvertToKwacha(double amount, double fxrate){
-    return amount * fxrate;
+// Returns a valid amount from user
+decimal GetAmount(string prompt){
+    while (true){
+        Console.Write(prompt);
+        bool isValid = decimal.TryParse(Console.ReadLine(), out decimal amount);
+        // Chack if choice is valid
+        if (isValid){
+            return amount;
+        }
+    }
 }
